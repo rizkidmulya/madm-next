@@ -8,18 +8,26 @@ import {
   IconButton,
   Box,
   Button,
+  Drawer,
+  Divider,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  List,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export default function AppNavBar({
   title,
   items,
+  drawerWidth = 240,
 }: {
   title: string;
-  items?: {
+  items: {
     text: string;
     link: string;
   }[];
+  drawerWidth?: number;
 }) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -27,7 +35,27 @@ export default function AppNavBar({
     setOpenDrawer(!openDrawer);
   };
 
-  const navList = <></>;
+  const drawer = (
+    <Box onClick={handleToogle} sx={{ textAlign: "center" }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        MADM
+      </Typography>
+      <Divider />
+      <List>
+        {items.map((item) => (
+          <ListItem key={item.link} disablePadding>
+            <ListItemButton
+              component={Link}
+              href={item.link}
+              sx={{ textAlign: "center" }}
+            >
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <>
@@ -58,6 +86,7 @@ export default function AppNavBar({
             {items &&
               items.map((item) => (
                 <Button
+                  key={item.text}
                   component={Link}
                   href={item.link}
                   sx={{ color: "#fff" }}
@@ -68,6 +97,22 @@ export default function AppNavBar({
           </Box>
         </Toolbar>
       </AppBar>
+      <Box>
+        <Drawer
+          sx={{
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: drawerWidth,
+            },
+          }}
+          variant="temporary"
+          open={openDrawer}
+          onClose={handleToogle}
+        >
+          {drawer}
+        </Drawer>
+      </Box>
     </>
   );
 }

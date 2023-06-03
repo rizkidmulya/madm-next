@@ -1,7 +1,8 @@
+"use client";
+
 import AppNavBar from "@/components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Box } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,9 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex">
+        <div className="flex flex-col">
           <AppNavBar title="MADM" items={items} />
-          <div className="p-4">{children}</div>
+          <div className="p-4 mt-14">{children}</div>
         </div>
       </body>
     </html>

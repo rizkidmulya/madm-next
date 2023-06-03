@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Product {
@@ -21,4 +22,39 @@ model Product {
   image String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Models {
+  id String @id @default(uuid())
+  name String
+  selected Boolean
+  learningRate Float @default(0.1)
+  epoch Int @default(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  coeffs Coeffs[]
+  sawOption Saw?
+}
+
+model Coeffs {
+  id Int @id @default(autoincrement())
+  value Float
+  power Int 
+  model Models @relation(fields: [modelId], references: [id])
+  modelId String
+}
+
+model Saw {
+  id Int @id @default(autoincrement())
+  model Models @relation(fields: [modelId], references: [id])
+  modelId String @unique
+  criterias Criteria[]
+}
+
+model Criteria {
+  id Int @id @default(autoincrement())
+  criteria String
+  weight Float
+  model Saw @relation(fields: [sawId], references: [id])
+  sawId Int
 }

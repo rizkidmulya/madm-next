@@ -30,6 +30,7 @@ model Models {
   selected Boolean
   learningRate Float @default(0.1)
   epoch Int @default(100)
+  mse Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   coeffs Coeffs[]

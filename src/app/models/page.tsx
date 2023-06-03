@@ -1,7 +1,7 @@
 import React from "react";
 
-const ModelsPage = () => {
-  return <div>ModelsPage</div>;
+const ModelsPage = async () => {
+  return <div>{}</div>;
 };
 
 export default ModelsPage;

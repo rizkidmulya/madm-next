@@ -1,13 +1,15 @@
 "use client";
-
-import React from "react";
+import React, { useState } from "react";
+import Link from "next/link";
 import {
-  Navbar,
-  MobileNav,
+  AppBar,
+  Toolbar,
   Typography,
   IconButton,
-} from "@material-tailwind/react";
-import Link from "next/link";
+  Box,
+  Button,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export default function AppNavBar({
   title,
@@ -19,88 +21,53 @@ export default function AppNavBar({
     link: string;
   }[];
 }) {
-  const [openNav, setOpenNav] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
-  React.useEffect(() => {
-    window.addEventListener(
-      "resize",
-      () => window.innerWidth >= 960 && setOpenNav(false)
-    );
-  }, []);
+  const handleToogle = () => {
+    setOpenDrawer(!openDrawer);
+  };
 
-  const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {items &&
-        items.map((item) => (
-          <Typography
-            as="li"
-            variant="small"
-            color="blue-gray"
-            className="p-1 font-normal"
-            key={item.text}
-          >
-            <Link href={item.link} className="flex items-center">
-              {item.text}
-            </Link>
-          </Typography>
-        ))}
-    </ul>
-  );
+  const navList = <></>;
 
   return (
     <>
-      <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
-        <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography
-            as="a"
-            href="/"
-            className="mr-4 cursor-pointer py-1.5 font-bold text-lg tracking-wider"
+      <AppBar component={"nav"}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleToogle}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
-            {title || "TITLE"}
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component={"div"}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+            }}
+          >
+            <Link href={"/"}>MADM</Link>
           </Typography>
-          <div className="flex items-center gap-4">
-            <div className="mr-4 hidden lg:block">{navList}</div>
-            <IconButton
-              variant="text"
-              className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
-              ripple={false}
-              onClick={() => setOpenNav(!openNav)}
-            >
-              {openNav ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  className="h-6 w-6"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+          <Box
+            sx={{ display: { xs: "none", sm: "flex" }, gap: { sm: 2, xs: 0 } }}
+          >
+            {items &&
+              items.map((item) => (
+                <Button
+                  component={Link}
+                  href={item.link}
+                  sx={{ color: "#fff" }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </IconButton>
-          </div>
-        </div>
-        <MobileNav open={openNav}>{navList}</MobileNav>
-      </Navbar>
+                  {item.text}
+                </Button>
+              ))}
+          </Box>
+        </Toolbar>
+      </AppBar>
     </>
   );
 }
